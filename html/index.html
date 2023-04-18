@@ -1,0 +1,81 @@
+<!-- websockets.html -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ввод данных</title>
+    </head>
+    <body>
+        <h2>Ввод данных</h2>
+        <form name="parameters">
+            <label>limits</label><br>
+            <input type="number" name="limits" /><br><br>
+            <label>threads</label><br>
+            <input type="number" name="threads" /><br><br>
+        </form>
+        <button onclick="send()" name="sendBtn">Send</button>
+        <pre style="max-width: 100%;" id="output"></pre>
+        <script>
+            let limits = document.getElementsByName("limits")
+            let threads = document.getElementsByName("threads")
+            let output = document.getElementById("output")
+            let ws
+
+            function send() {
+                document.getElementsByName("sendBtn").disabled = true
+                // при нажатии на кнопку
+                // возьмём данные с формы
+                json = getParameters()
+
+                // создаём POST-запрос на сервер
+                let xhr = new XMLHttpRequest()
+                xhr.open("POST", "/run")
+                xhr.send(json)
+
+                // при получении ответа с сервера
+                xhr.onload = function() {
+                    // если что-то не так, отображаем ошибку
+                    if (xhr.status != 200) {
+                        alert(`Ошибка ${xhr.status}: ${xhr.responseText}`)
+                    } else {
+                        // устанавливаем WEBSocket соединение
+                        WEBSocketStart()
+                    }
+                }
+                // Слушаем событие ухода пользователя
+                window.addEventListener("unload", function() {
+                    // закрываем соединение
+                    ws.close()
+                })
+            }
+
+            function getParameters() {
+                let params = new FormData(document.forms.parameters)
+                let formJSON = {}
+                params.forEach((value, key) => formJSON[key.toLowerCase()] = parseInt(value))
+                return JSON.stringify(formJSON)
+            }
+
+            function WEBSocketStart() {
+                ws = new WebSocket("ws://localhost:8080/ws")
+                // если соединение открылось
+                ws.onopen = function() {
+                    output.innerHTML = "Server: Connected\nNumbers: "
+                }
+                // если пришло сообщение
+                ws.onmessage = function(e) {
+                    output.innerHTML += e.data + " "
+                }
+                // если пришла ошибка
+                ws.onerror = function(evt) {
+                    output.innerHTML = "ERROR: " + evt.data
+                }
+                // если соединение закрылось
+                ws.onclose = function() {
+                    document.getElementsByName("sendBtn").disabled = false
+                    output.innerHTML += "\nServer: Disconnected"
+                }
+            }
+        </script>
+    </body>
+</html>
