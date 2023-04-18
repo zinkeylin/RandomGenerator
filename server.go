@@ -87,18 +87,13 @@ func ws(w http.ResponseWriter, r *http.Request) {
 
 
 	// запуск хэндлера
-	workDone := false
 	go gen.Handler(ctx, params.Limits, params.Threads, out)
 	go func() {
 		for {
 			mt, _, err := conn.ReadMessage()
 			if err != nil || mt == websocket.CloseMessage {
-				fmt.Println("error: ", err)
 				cancel()
 				time.Sleep(time.Second)
-				break
-			}
-			if workDone {
 				break
 			}
 		}
@@ -113,7 +108,6 @@ func ws(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
-	workDone = true
 }
 
 func errorResponce(w http.ResponseWriter, errorResponceCode int, err error) error {

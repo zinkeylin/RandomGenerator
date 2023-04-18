@@ -1,4 +1,4 @@
 github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
 github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
-github.com/zinkeylin/Randomizer v1.3.0 h1:UTzxS7xLOGjGXxJH4SgFAGzmwZjBMUuRrI4tztrJBEY=
-github.com/zinkeylin/Randomizer v1.3.0/go.mod h1:6KEvs1bl+kUG+fX2jR4Fv0vrek6BB5rhwahtzf+lJB4=
+github.com/zinkeylin/Randomizer v1.4.0 h1:Io/4HNgn8jhNr7EJwly1GFNeEQ23Aw3BNvsUxV/SAE0=
+github.com/zinkeylin/Randomizer v1.4.0/go.mod h1:6KEvs1bl+kUG+fX2jR4Fv0vrek6BB5rhwahtzf+lJB4=
